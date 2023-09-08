@@ -1,14 +1,13 @@
-const express = require('express');
-const { createServer } = require('node:http');
-const { join } = require('node:path');
-const { Server } = require('socket.io');
+import express from 'express';
+import { createServer } from 'node:http';
+import { Server } from 'socket.io';
 
 const app = express();
 const server = createServer(app);
 const io = new Server(server);
 
 app.get('/', (req, res) => {
-  res.sendFile(join(__dirname, 'index.html'));
+  res.sendFile(new URL('./index.html', import.meta.url).pathname);
 });
 
 io.on('connection', (socket) => {
