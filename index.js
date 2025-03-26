@@ -5,17 +5,13 @@ import { dirname, join } from 'node:path';
 import { Server } from 'socket.io';
 import sqlite3 from 'sqlite3';
 import { open } from 'sqlite';
-import { availableParallelism } from 'node:os';
 import cluster from 'node:cluster';
 import { createAdapter, setupPrimary } from '@socket.io/cluster-adapter';
 
 if (cluster.isPrimary) {
-  const numCPUs = availableParallelism();
-  for (let i = 0; i < numCPUs; i++) {
-    cluster.fork({
-      PORT: 3000 + i
-    });
-  }
+  cluster.fork({
+      PORT: process.env.PORT || '3000'
+  });
 
   setupPrimary();
 } else {
